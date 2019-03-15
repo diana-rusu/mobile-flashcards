@@ -8,9 +8,6 @@ import {
   Platform
 } from "react-native";
 import { white, purple } from "../utils/colors";
-import { addDeck } from "../actions";
-import { submitEntry } from "../utils/api";
-import { connect } from "react-redux";
 
 function SubmitBtn({ onPress }) {
   return (
@@ -20,57 +17,65 @@ function SubmitBtn({ onPress }) {
       }
       onPress={onPress}
     >
-      <Text style={styles.submitBtnText}>Create Deck</Text>
+      <Text style={styles.submitBtnText}>SUBMIT</Text>
     </TouchableOpacity>
   );
 }
 
-class AddDeck extends Component {
+class AddCard extends Component {
   state = {
-    deck_name: ""
+    question: "diana?",
+    answer: "yes"
   };
 
-  handleTextChange = deck_name => {
+  handleTextChange = question => {
     this.setState(() => ({
-      deck_name: deck_name
+      question: question,
+      answer: answer
     }));
   };
   submit = () => {
-    const { deck } = this.state;
-    const key = "title";
-    const deck_name = this.state;
-    console.log("DECK", this.state.deck_name);
+    const deck = this.state;
+    console.log("DECK", key, this.state);
 
     this.props.dispatch(
-      addDeck({
-        [key]: deck_name
+      AddCard({
+        [key]: deck
       })
     );
 
     this.setState(() => ({
-      deck_name: ""
+      question: "a"
     }));
-
-    submitEntry({ key, deck_name });
   };
 
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text> What is the title of your new deck</Text>
+  // Navigate to home
 
+  //Submit
+
+  //Clear local notifications
+  render() {
+    const { question, answer } = this.state;
+    return (
+      <View>
+        <Text> Add Deck</Text>
+        {/* <TextInput value={question} onChange={this.setState.handleTextChange} /> */}
         <TextInput
-          style={styles.input}
-          placeholder="Deck name"
-          value={this.state.deck_name}
-          // type="text"
+          value={question}
+          type="text"
           style={{
             height: 40,
             paddingLeft: 6,
             borderColor: "gray",
             borderWidth: 1
           }}
-          onChangeText={text => this.setState({ deck_name: text })}
+          onChange={this.setState.handleTextChange}
+        />
+        <TextInput
+          value={answer}
+          type="text"
+          style={{ height: 40, borderColor: "gray", borderWidth: 1 }}
+          onChange={this.setState.handleTextChange}
         />
         <SubmitBtn onPress={this.submit} />
       </View>
@@ -83,12 +88,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     backgroundColor: white
-  },
-  input: {
-    margin: 15,
-    height: 40,
-    borderColor: "#7a42f4",
-    borderWidth: 1
   },
   row: {
     flexDirection: "row",
@@ -128,4 +127,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default connect()(AddDeck);
+export default AddCard;

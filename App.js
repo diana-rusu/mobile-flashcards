@@ -7,9 +7,13 @@ import {
 } from "react-navigation";
 import Decks from "./components/Decks";
 import AddDeck from "./components/AddDeck";
+import AddCard from "./components/AddCard";
 import { white, purple } from "./utils/colors";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { Constants } from "expo";
+import { createStore } from "redux";
+import { Provider } from "react-redux";
+import entriesReducer from "./reducers/index";
 
 function DecksStatusBar({ backgroundColor, ...props }) {
   return (
@@ -33,6 +37,15 @@ const RouteConfigs = {
     screen: AddDeck,
     navigationOptions: {
       tabBarLabel: "AddDeck",
+      tabBarIcon: ({ tintColor }) => (
+        <Ionicons name="md-speedometer" size={30} color={tintColor} />
+      )
+    }
+  },
+  AddCard: {
+    screen: AddCard,
+    navigationOptions: {
+      tabBarLabel: "AddCard",
       tabBarIcon: ({ tintColor }) => (
         <Ionicons name="md-speedometer" size={30} color={tintColor} />
       )
@@ -65,14 +78,17 @@ const Tabs =
     ? createBottomTabNavigator(RouteConfigs, TabNavigatorConfig)
     : createMaterialTopTabNavigator(RouteConfigs, TabNavigatorConfig);
 const TabsContainer = createAppContainer(Tabs);
+const store = createStore(entriesReducer);
 
 export default class App extends React.Component {
   render() {
     return (
-      <View style={{ flex: 1 }}>
-        <DecksStatusBar backgroundColor={purple} barStyle="light-content" />
-        <TabsContainer />
-      </View>
+      <Provider store={store}>
+        <View style={{ flex: 1 }}>
+          <DecksStatusBar backgroundColor={purple} barStyle="light-content" />
+          <TabsContainer />
+        </View>
+      </Provider>
     );
   }
 }
