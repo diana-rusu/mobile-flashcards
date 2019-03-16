@@ -1,9 +1,4 @@
-import {
-  RECEIVE_DECKS,
-  RECEIVE_QUESTIONS,
-  ADD_DECK,
-  ADD_QUESTION
-} from "../actions/index";
+import { RECEIVE_DECKS, ADD_DECK, ADD_CARD } from "../actions/index";
 import { combineReducers } from "redux";
 
 const entriesReducer = (state = {}, action) => {
@@ -18,14 +13,24 @@ const entriesReducer = (state = {}, action) => {
         ...state,
         ...action.deck
       };
-    case ADD_QUESTION:
+    case ADD_CARD:
+      const newCard = {
+        question: action.question,
+        answer: action.answer
+      };
+      console.log("QUESTIONSS", state[action.deckTitle].questions);
+      console.log("NEW CARD", newCard);
       return {
         ...state,
-        ...action.question
+        [action.deckTitle]: {
+          ...state[action.deckTitle],
+          questions: state[action.deckTitle].questions.concat(newCard)
+        }
       };
     default:
       return state;
   }
+  a;
 };
 export default combineReducers({
   entries: entriesReducer

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import {
   View,
   Text,
@@ -8,76 +9,80 @@ import {
   Platform
 } from "react-native";
 import { white, purple } from "../utils/colors";
+import { addCard } from "../actions";
+import { addCardToDeck } from "../utils/api";
 
-function SubmitBtn({ onPress }) {
+function SubmitBtn({ onPress, props }) {
   return (
     <TouchableOpacity
       style={
         Platform.OS === "ios" ? styles.iosSubmitBtn : styles.androidSubmitBtn
       }
-      onPress={onPress}
+      onPress={() => onPress(props)}
     >
-      <Text style={styles.submitBtnText}>SUBMIT</Text>
+      <Text style={styles.submitBtnText}>ADD CARD</Text>
     </TouchableOpacity>
   );
 }
 
 class AddCard extends Component {
   state = {
-    question: "diana?",
-    answer: "yes"
+    question: "",
+    answer: ""
   };
-
-  handleTextChange = question => {
-    this.setState(() => ({
-      question: question,
-      answer: answer
-    }));
-  };
-  submit = () => {
-    const deck = this.state;
-    console.log("DECK", key, this.state);
-
-    this.props.dispatch(
-      AddCard({
-        [key]: deck
-      })
-    );
-
-    this.setState(() => ({
-      question: "a"
-    }));
-  };
-
-  // Navigate to home
-
-  //Submit
-
-  //Clear local notifications
-  render() {
+  submit = props => {
     const { question, answer } = this.state;
+    const { deckTitle } = props.navigation.state.params;
+    console.log("SUBMITTT");
+    this.props.dispatch(addCard(question, answer, deckTitle));
+    addCardToDeck(question, answer, deckTitle);
+    this.setState(() => ({
+      question: "",
+      answer: ""
+    }));
+  };
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: "Add Card"
+    };
+  };
+  render() {
     return (
-      <View>
-        <Text> Add Deck</Text>
-        {/* <TextInput value={question} onChange={this.setState.handleTextChange} /> */}
-        <TextInput
-          value={question}
-          type="text"
-          style={{
-            height: 40,
-            paddingLeft: 6,
-            borderColor: "gray",
-            borderWidth: 1
-          }}
-          onChange={this.setState.handleTextChange}
-        />
-        <TextInput
-          value={answer}
-          type="text"
-          style={{ height: 40, borderColor: "gray", borderWidth: 1 }}
-          onChange={this.setState.handleTextChange}
-        />
-        <SubmitBtn onPress={this.submit} />
+      <View style={styles.container}>
+        <View style={{ height: 80 }}>
+          <TextInput
+            style={styles.input}
+            underlineColorAndroid="transparent"
+            placeholder="Question"
+            value={this.state.question}
+            style={{
+              height: 40,
+              width: 300,
+              paddingLeft: 6,
+              borderColor: "gray",
+              borderWidth: 1
+            }}
+            onChangeText={text => this.setState({ question: text })}
+          />
+        </View>
+        <View style={{ height: 80 }}>
+          <TextInput
+            style={styles.input}
+            underlineColorAndroid="transparent"
+            placeholder="Answer"
+            value={this.state.answer}
+            style={{
+              height: 40,
+              width: 300,
+              paddingLeft: 6,
+              borderColor: "gray",
+              borderWidth: 1
+            }}
+            onChangeText={text => this.setState({ answer: text })}
+          />
+        </View>
+
+        <SubmitBtn onPress={this.submit} props={this.props} />
       </View>
     );
   }
@@ -86,13 +91,10 @@ class AddCard extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    backgroundColor: white
-  },
-  row: {
-    flexDirection: "row",
-    flex: 1,
-    alignItems: "center"
+    padding: 35,
+    margin: 20,
+    alignItems: "center",
+    justifyContent: "center"
   },
   iosSubmitBtn: {
     backgroundColor: purple,
@@ -124,7 +126,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginLeft: 30,
     marginRight: 30
+  },
+  input: {
+    margin: 15,
+    height: 40,
+    borderColor: "#7a42f4",
+    borderWidth: 1
   }
 });
 
-export default AddCard;
+export default connect()(AddCard);

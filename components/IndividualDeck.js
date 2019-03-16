@@ -10,14 +10,18 @@ import {
   TouchableOpacity,
   Platform
 } from "react-native";
-import { white, purple, black } from "../utils/colors";
+import { white, purple, black, red } from "../utils/colors";
 function AddCardBtn({ props }) {
   return (
     <TouchableOpacity
       style={
         Platform.OS === "ios" ? styles.iosAddCardBtn : styles.androidAddCardBtn
       }
-      onPress={() => props.navigation.navigate("AddCard")}
+      onPress={() =>
+        props.navigation.navigate("AddCard", {
+          deckTitle: props.navigation.state.params.deckTitle.key
+        })
+      }
     >
       <Text style={styles.addCardBtnText}>Add Card</Text>
     </TouchableOpacity>
@@ -32,7 +36,11 @@ function StartQuizBtn({ props }) {
           ? styles.iosStartQuizBtn
           : styles.androidStartQuizBtn
       }
-      onPress={() => props.navigation.navigate("Quiz")}
+      onPress={() =>
+        props.navigation.navigate("Quiz", {
+          deckTitle: props.navigation.state.params.deckTitle.key
+        })
+      }
     >
       <Text style={styles.startQuizBtnText}>Start Quiz</Text>
     </TouchableOpacity>
@@ -40,16 +48,23 @@ function StartQuizBtn({ props }) {
 }
 
 class IndividualDeck extends Component {
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: "Deck"
+    };
+  };
   render() {
     return (
       <View style={styles.container}>
         <Text style={styles.text}>
-          {this.props.navigation.state.params.itemTitle.key}
+          {this.props.navigation.state.params.deckTitle.key}
         </Text>
         <Text>Number of Cards</Text>
         <AddCardBtn props={this.props} />
         <StartQuizBtn props={this.props} />
-        <Text>Delete Deck</Text>
+        <TouchableOpacity>
+          <Text style={{ color: red }}>Delete Deck</Text>
+        </TouchableOpacity>
       </View>
     );
   }
