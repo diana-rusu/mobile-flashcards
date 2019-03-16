@@ -25,7 +25,7 @@ function SubmitBtn({ onPress }) {
   );
 }
 
-class AddDeck extends Component {
+class NewDeck extends Component {
   state = {
     deck_name: ""
   };
@@ -50,7 +50,7 @@ class AddDeck extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={{ fontSize: 35, textAlign: "center" }}>
+        <Text style={{ fontSize: 50, textAlign: "center" }}>
           What is the title of your new deck
         </Text>
 
@@ -120,4 +120,4 @@ const styles = StyleSheet.create({
     marginRight: 30
   }
 });
-export default connect()(AddDeck);
+export default connect()(NewDeck);

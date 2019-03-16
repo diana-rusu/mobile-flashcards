@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { StackNavigator, createStackNavigator } from "react-navigation";
+import IndividualDeck from "./IndividualDeck";
 import {
   View,
   Text,
@@ -10,13 +12,14 @@ import { receiveDecks } from "../actions";
 import { fetchDecks } from "../utils/api";
 import { connect } from "react-redux";
 
-class Decks extends Component {
+class DeckList extends Component {
   componentDidMount() {
     const { dispatch } = this.props;
     fetchDecks().then(entries => dispatch(receiveDecks(entries)));
   }
-  actionOnRow(item) {
-    console.log("Selected Item :", item);
+  actionOnRow(key) {
+    console.log("Selected Item :", key);
+    this.props.navigation.navigate("IndividualDeck", { itemTitle: key });
   }
 
   renderDecks() {
@@ -30,13 +33,27 @@ class Decks extends Component {
         keyList.push({ key: el });
       });
     });
+
     return (
       <View>
         <FlatList
           data={keyList}
           renderItem={({ item }) => (
             <TouchableOpacity onPress={() => this.actionOnRow(item)}>
-              <Text style={styles.text}>{item.key}</Text>
+              <View
+                style={{
+                  flex: 1,
+                  margin: 10,
+                  paddingVertical: 20,
+                  borderBottomWidth: 1,
+                  borderColor: "#CED0CE"
+                }}
+              >
+                <Text style={styles.text}>{item.key}</Text>
+                <Text style={{ textAlign: "center", color: "#CED0CE" }}>
+                  cards
+                </Text>
+              </View>
             </TouchableOpacity>
           )}
         />
@@ -58,13 +75,10 @@ class Decks extends Component {
     );
   }
 }
+
 const styles = StyleSheet.create({
-  view: {
-    paddingTop: 30
-  },
   text: {
-    flex: 1,
-    fontSize: 40,
+    fontSize: 30,
     textAlign: "center"
   }
 });
@@ -73,4 +87,4 @@ function mapStateToProps(entries) {
     entries
   };
 }
-export default connect(mapStateToProps)(Decks);
+export default connect(mapStateToProps)(DeckList);
