@@ -14,12 +14,9 @@ const entriesReducer = (state = {}, action) => {
         ...action.decks
       };
     case ADD_DECK:
-      {
-        console.log("Adding deck", state, action);
-      }
       return {
         ...state,
-        [action.deck.key]: action.deck
+        ...action.deck
       };
     case ADD_QUESTION:
       return {

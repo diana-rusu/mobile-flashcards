@@ -32,26 +32,19 @@ class AddDeck extends Component {
 
   handleTextChange = deck_name => {
     this.setState(() => ({
-      deck_name: deck_name
+      deck_name
     }));
   };
   submit = () => {
-    const { deck } = this.state;
-    const key = "title";
     const deck_name = this.state;
-    console.log("DECK", this.state.deck_name);
-
-    this.props.dispatch(
-      addDeck({
-        [key]: deck_name
-      })
-    );
-
+    const newDeck = {
+      [deck_name.deck_name]: { title: deck_name.deck_name, questions: [] }
+    };
+    this.props.dispatch(addDeck(newDeck));
+    submitEntry(newDeck);
     this.setState(() => ({
       deck_name: ""
     }));
-
-    submitEntry({ key, deck_name });
   };
 
   render() {
@@ -82,18 +75,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: white
+    backgroundColor: white,
+    justifyContent: "space-around"
+    // alignItems: "center"
   },
   input: {
     margin: 15,
     height: 40,
     borderColor: "#7a42f4",
     borderWidth: 1
-  },
-  row: {
-    flexDirection: "row",
-    flex: 1,
-    alignItems: "center"
   },
   iosSubmitBtn: {
     backgroundColor: purple,
@@ -110,9 +100,8 @@ const styles = StyleSheet.create({
     paddingRight: 30,
     borderRadius: 2,
     height: 45,
-    alignSelf: "flex-end",
-    justifyContent: "center",
-    alignItems: "center"
+    alignSelf: "flex-start",
+    justifyContent: "center"
   },
   submitBtnText: {
     color: white,
@@ -127,5 +116,4 @@ const styles = StyleSheet.create({
     marginRight: 30
   }
 });
-
 export default connect()(AddDeck);

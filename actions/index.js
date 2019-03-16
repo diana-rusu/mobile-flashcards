@@ -10,7 +10,6 @@ export function receiveDecks(decks) {
   };
 }
 
-
 export function addDeck(deck) {
   return {
     type: ADD_DECK,
@@ -30,7 +29,7 @@ export function handleAddQuestion(text1, text2) {
     dispatch(showLoading());
     let question = {
       optionOneText: text1,
-      optionTwoText: text2,
+      optionTwoText: text2
     };
     return _saveQuestion(question)
       .then(question => dispatch(addQuestion(question)))
