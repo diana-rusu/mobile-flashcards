@@ -18,8 +18,6 @@ const entriesReducer = (state = {}, action) => {
         question: action.question,
         answer: action.answer
       };
-      console.log("QUESTIONSS", state[action.deckTitle].questions);
-      console.log("NEW CARD", newCard);
       return {
         ...state,
         [action.deckTitle]: {

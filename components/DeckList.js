@@ -18,7 +18,6 @@ class DeckList extends Component {
     fetchDecks().then(entries => dispatch(receiveDecks(entries)));
   }
   actionOnRow(key) {
-    console.log("Selected Item :", key);
     this.props.navigation.navigate("IndividualDeck", { deckTitle: key });
   }
 
@@ -36,7 +35,6 @@ class DeckList extends Component {
 
     return (
       <View>
-        {console.log(this.props.entries)}
         <FlatList
           data={keyList}
           renderItem={({ item }) => (
