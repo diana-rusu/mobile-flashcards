@@ -50,7 +50,9 @@ class AddDeck extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text> What is the title of your new deck</Text>
+        <Text style={{ fontSize: 35, textAlign: "center" }}>
+          What is the title of your new deck
+        </Text>
 
         <TextInput
           style={styles.input}
@@ -59,6 +61,7 @@ class AddDeck extends Component {
           // type="text"
           style={{
             height: 40,
+            width: 300,
             paddingLeft: 6,
             borderColor: "gray",
             borderWidth: 1
@@ -76,8 +79,8 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     backgroundColor: white,
-    justifyContent: "space-around"
-    // alignItems: "center"
+    justifyContent: "space-around",
+    alignItems: "center"
   },
   input: {
     margin: 15,
@@ -100,13 +103,14 @@ const styles = StyleSheet.create({
     paddingRight: 30,
     borderRadius: 2,
     height: 45,
-    alignSelf: "flex-start",
+    textAlign: "center",
     justifyContent: "center"
   },
   submitBtnText: {
     color: white,
     fontSize: 22,
-    textAlign: "center"
+    textAlign: "center",
+    alignItems: "center"
   },
   center: {
     flex: 1,
