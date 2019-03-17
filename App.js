@@ -17,6 +17,7 @@ import { createStore } from "redux";
 import { Provider } from "react-redux";
 import entriesReducer from "./reducers/index";
 import IndividualDeck from "./components/IndividualDeck";
+import { setLocalNotification } from "./utils/api";
 
 function DecksStatusBar({ backgroundColor, ...props }) {
   return (
@@ -110,6 +111,9 @@ const TabsContainer = createAppContainer(Stack);
 const store = createStore(entriesReducer);
 
 export default class App extends React.Component {
+  componentDidMount() {
+    setLocalNotification();
+  }
   render() {
     return (
       <Provider store={store}>

@@ -28,7 +28,7 @@ function AddCardBtn({ props }) {
   );
 }
 
-function StartQuizBtn({ props, questions }) {
+function StartQuizBtn({ props, questions, count }) {
   return (
     <TouchableOpacity
       style={
@@ -39,7 +39,7 @@ function StartQuizBtn({ props, questions }) {
       onPress={() =>
         props.navigation.navigate("Quiz", {
           deckTitle: props.navigation.state.params.deckTitle.key,
-          cardsCount: props.navigation.state.params.cardsCount,
+          cardsCount: count,
           questions: questions
         })
       }
@@ -71,7 +71,11 @@ class IndividualDeck extends Component {
           </Text>
         </View>
         <AddCardBtn props={this.props} />
-        <StartQuizBtn props={this.props} questions={questions} />
+        <StartQuizBtn
+          props={this.props}
+          questions={questions}
+          count={this.props.entries.entries[deckTitle].questions.length}
+        />
       </View>
     );
   }
