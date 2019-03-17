@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import { StackNavigator, createStackNavigator } from "react-navigation";
-import IndividualDeck from "./IndividualDeck";
 import {
   View,
   Text,

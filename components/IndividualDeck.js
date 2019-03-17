@@ -1,16 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import AddCard from "./AddCard";
-import Quiz from "./Quiz";
 import {
   View,
   Text,
-  TextInput,
   StyleSheet,
   TouchableOpacity,
   Platform
 } from "react-native";
-import { white, purple, black, red } from "../utils/colors";
+import { white, black, red } from "../utils/colors";
 function AddCardBtn({ props }) {
   return (
     <TouchableOpacity
