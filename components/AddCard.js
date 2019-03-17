@@ -33,7 +33,6 @@ class AddCard extends Component {
   submit = props => {
     const { question, answer } = this.state;
     const { deckTitle } = props.navigation.state.params;
-    console.log("SUBMITTT");
     this.props.dispatch(addCard(question, answer, deckTitle));
     addCardToDeck(question, answer, deckTitle);
     this.setState(() => ({

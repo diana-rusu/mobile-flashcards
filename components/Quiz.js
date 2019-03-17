@@ -46,43 +46,60 @@ function IncorrectBtn({ props }) {
 }
 
 class Quiz extends Component {
+  state = {
+    showHideAnswerState: false,
+    countQuestionsRemaining: 0
+  };
   submit = () => {
     console.log(sumbitting);
   };
   get_random = list => {
     return list[Math.floor(Math.random() * list.length)];
   };
-  getQuestionList = deckTitle => {
-    let questionList = [];
-    Object.values(this.props.entries).map(entry => {
-      Object.values(entry).map(item => {
-        if (item.title === deckTitle) {
-          item.questions.map(q => {
-            questionList.push(q.question);
-          });
-        }
-      });
-    });
-    if (questionList.length > 0) {
-      return this.get_random(questionList);
-    }
-    return null;
-  };
+
   static navigationOptions = ({ navigation }) => {
     return {
       title: "Quiz"
     };
   };
+  showHideAnswer = () => {
+    this.setState({
+      showHideAnswerState: !this.state.showHideAnswerState
+    });
+    console.log("showHideAnswerState", this.state.showHideAnswerState);
+  };
   render() {
-    const { deckTitle } = this.props.navigation.state.params;
+    const { deckTitle, questions } = this.props.navigation.state.params;
+    const { showHideAnswerState } = this.state;
     return (
       <View style={styles.container}>
-        {this.getQuestionList(deckTitle) !== null ? (
+        {this.props.navigation.state.params.cardsCount > 0 ? (
           <View>
-            <View style={{ height: 200, alignItems: "center" }}>
-              <Text style={styles.text}>{this.getQuestionList(deckTitle)}</Text>
-              <Text style={{ color: red }}>Answer</Text>
-            </View>
+            <Text>
+              Questions left:{" "}
+              {this.props.navigation.state.params.cardsCount - 1}
+            </Text>
+
+            {showHideAnswerState ? (
+              <View>
+                <View style={{ height: 200, alignItems: "center" }}>
+                  <Text style={styles.text}>{questions[0].answer}</Text>
+                  <TouchableOpacity onPress={this.showHideAnswer}>
+                    <Text style={{ color: red }}>Question</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            ) : (
+              <View>
+                <View style={{ height: 200, alignItems: "center" }}>
+                  <Text style={styles.text}>{questions[0].question}</Text>
+                  <TouchableOpacity onPress={this.showHideAnswer}>
+                    <Text style={{ color: red }}>Answer</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            )}
+
             <View style={{ height: 80 }}>
               <CorrectBtn props={this.props} />
             </View>

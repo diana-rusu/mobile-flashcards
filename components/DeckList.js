@@ -13,18 +13,24 @@ import { fetchDecks } from "../utils/api";
 import { connect } from "react-redux";
 
 class DeckList extends Component {
-  componentDidMount() {
-    const { dispatch } = this.props;
-    fetchDecks().then(entries => dispatch(receiveDecks(entries)));
-  }
-  actionOnRow(key) {
-    this.props.navigation.navigate("IndividualDeck", { deckTitle: key });
+  actionOnRow(key, count) {
+    this.props.navigation.navigate("IndividualDeck", {
+      deckTitle: key,
+      cardsCount: count
+    });
   }
 
   renderDecks() {
     let deckList = [];
     let keyList = [];
+    let titleCount = {};
+    countCards = 0;
+    const { dispatch } = this.props;
+    fetchDecks().then(entries => dispatch(receiveDecks(entries)));
     Object.values(this.props.entries).map(entry => {
+      Object.values(entry).map(ob => {
+        titleCount[ob.title] = ob.questions.length;
+      });
       deckList.push(Object.keys(entry));
     });
     deckList.forEach(element => {
@@ -38,7 +44,9 @@ class DeckList extends Component {
         <FlatList
           data={keyList}
           renderItem={({ item }) => (
-            <TouchableOpacity onPress={() => this.actionOnRow(item)}>
+            <TouchableOpacity
+              onPress={() => this.actionOnRow(item, titleCount[item.key])}
+            >
               <View
                 style={{
                   flex: 1,
@@ -50,7 +58,7 @@ class DeckList extends Component {
               >
                 <Text style={styles.text}>{item.key}</Text>
                 <Text style={{ textAlign: "center", color: "#CED0CE" }}>
-                  cards
+                  cards {titleCount[item.key]}
                 </Text>
               </View>
             </TouchableOpacity>

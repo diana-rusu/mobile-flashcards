@@ -45,6 +45,12 @@ class NewDeck extends Component {
     this.setState(() => ({
       deck_name: ""
     }));
+    const key = { key: deck_name.deck_name };
+    const count = 0;
+    this.props.navigation.navigate("IndividualDeck", {
+      deckTitle: key,
+      cardsCount: count
+    });
   };
 
   render() {
