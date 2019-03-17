@@ -56,15 +56,20 @@ class IndividualDeck extends Component {
     };
   };
   render() {
-    const deckTitle = this.props.navigation.state.params.deckTitle.key;
-    const { cardsCount } = this.props.navigation.state.params;
+    const deckTitle =
+      this.props.navigation.state.params.deckTitle &&
+      this.props.navigation.state.params.deckTitle.key;
     const questions =
       this.props.entries.entries[deckTitle] &&
       this.props.entries.entries[deckTitle].questions;
     return (
       <View style={styles.container}>
-        <Text style={styles.text}>{deckTitle}</Text>
-        <Text>cards {cardsCount}</Text>
+        <View style={{ height: 100 }}>
+          <Text style={styles.text}>{deckTitle}</Text>
+          <Text style={{ textAlign: "center", fontSize: 18, color: "#CED0CE" }}>
+            cards {this.props.entries.entries[deckTitle].questions.length}
+          </Text>
+        </View>
         <AddCardBtn props={this.props} />
         <StartQuizBtn props={this.props} questions={questions} />
       </View>

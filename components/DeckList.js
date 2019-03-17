@@ -13,6 +13,10 @@ import { fetchDecks } from "../utils/api";
 import { connect } from "react-redux";
 
 class DeckList extends Component {
+  componentDidMount() {
+    const { dispatch } = this.props;
+    fetchDecks().then(entries => dispatch(receiveDecks(entries)));
+  }
   actionOnRow(key, count) {
     this.props.navigation.navigate("IndividualDeck", {
       deckTitle: key,
@@ -25,8 +29,6 @@ class DeckList extends Component {
     let keyList = [];
     let titleCount = {};
     countCards = 0;
-    const { dispatch } = this.props;
-    fetchDecks().then(entries => dispatch(receiveDecks(entries)));
     Object.values(this.props.entries).map(entry => {
       Object.values(entry).map(ob => {
         titleCount[ob.title] = ob.questions.length;

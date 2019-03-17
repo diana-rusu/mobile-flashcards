@@ -3,60 +3,20 @@ import { connect } from "react-redux";
 import {
   View,
   Text,
-  TextInput,
   StyleSheet,
   TouchableOpacity,
   Platform
 } from "react-native";
-import { white, purple, red, green, black } from "../utils/colors";
-function CorrectBtn({ props }) {
-  return (
-    <TouchableOpacity
-      style={
-        Platform.OS === "ios" ? styles.iosCorrectBtn : styles.androidCorrectBtn
-      }
-      onPress={() =>
-        props.navigation.navigate("AddCard", {
-          deckTitle: props.navigation.state.params.deckTitle.key
-        })
-      }
-    >
-      <Text style={styles.correctBtnText}>Correct</Text>
-    </TouchableOpacity>
-  );
-}
-
-function IncorrectBtn({ props }) {
-  return (
-    <TouchableOpacity
-      style={
-        Platform.OS === "ios"
-          ? styles.iosIncorrectBtn
-          : styles.androidIncorrectBtn
-      }
-      onPress={() =>
-        props.navigation.navigate("Quiz", {
-          deckTitle: props.navigation.state.params.deckTitle.key
-        })
-      }
-    >
-      <Text style={styles.incorrectBtnText}>Incorrect</Text>
-    </TouchableOpacity>
-  );
-}
+import { white, red, green, black } from "../utils/colors";
 
 class Quiz extends Component {
   state = {
     showHideAnswerState: false,
-    countQuestionsRemaining: 0
+    showScore: 0,
+    countCardsRemaining: this.props.navigation.state.params.cardsCount - 1,
+    correct: 0,
+    incorrect: 0
   };
-  submit = () => {
-    console.log(sumbitting);
-  };
-  get_random = list => {
-    return list[Math.floor(Math.random() * list.length)];
-  };
-
   static navigationOptions = ({ navigation }) => {
     return {
       title: "Quiz"
@@ -66,46 +26,134 @@ class Quiz extends Component {
     this.setState({
       showHideAnswerState: !this.state.showHideAnswerState
     });
-    console.log("showHideAnswerState", this.state.showHideAnswerState);
+  };
+  handleCorrect = () => {
+    if (this.state.countCardsRemaining >= 0) {
+      this.setState({
+        correct: (this.state.correct += 1),
+        countCardsRemaining: (this.state.countCardsRemaining -= 1)
+      });
+      if (this.state.countCardsRemaining < 0) {
+        this.setState({
+          showScore: true
+        });
+      }
+    }
+  };
+  handleIncorrect = () => {
+    if (this.state.countCardsRemaining >= 0) {
+      this.setState({
+        incorrect: (this.state.incorrect += 1),
+        countCardsRemaining: (this.state.countCardsRemaining -= 1)
+      });
+      if (this.state.countCardsRemaining < 0) {
+        this.setState({
+          showScore: true
+        });
+      }
+    }
   };
   render() {
     const { deckTitle, questions } = this.props.navigation.state.params;
-    const { showHideAnswerState } = this.state;
+    const { showHideAnswerState, showScore, countCardsRemaining } = this.state;
+    const cardIndex =
+      this.props.navigation.state.params.cardsCount - countCardsRemaining - 1;
     return (
       <View style={styles.container}>
         {this.props.navigation.state.params.cardsCount > 0 ? (
           <View>
-            <Text>
-              Questions left:{" "}
-              {this.props.navigation.state.params.cardsCount - 1}
-            </Text>
-
-            {showHideAnswerState ? (
+            {showScore ? (
               <View>
-                <View style={{ height: 200, alignItems: "center" }}>
-                  <Text style={styles.text}>{questions[0].answer}</Text>
-                  <TouchableOpacity onPress={this.showHideAnswer}>
-                    <Text style={{ color: red }}>Question</Text>
+                <View style={{ height: 200 }}>
+                  <Text style={styles.text}>
+                    Correct questions: {this.state.correct}
+                  </Text>
+                  <Text style={styles.text}>
+                    Incorrect questions: {this.state.incorrect}
+                  </Text>
+                </View>
+                <View style={{ height: 80 }}>
+                  <TouchableOpacity
+                    style={
+                      Platform.OS === "ios"
+                        ? styles.iosCorrectBtn
+                        : styles.androidCorrectBtn
+                    }
+                    onPress={() =>
+                      this.props.navigation.navigate("IndividualDeck")
+                    }
+                  >
+                    <Text style={styles.correctBtnText}>Restart Quiz</Text>
+                  </TouchableOpacity>
+                </View>
+                <View style={{ height: 80 }}>
+                  <TouchableOpacity
+                    style={
+                      Platform.OS === "ios"
+                        ? styles.iosIncorrectBtn
+                        : styles.androidIncorrectBtn
+                    }
+                    onPress={() => this.props.navigation.navigate("Home")}
+                  >
+                    <Text style={styles.incorrectBtnText}>Back to Deck</Text>
                   </TouchableOpacity>
                 </View>
               </View>
             ) : (
               <View>
-                <View style={{ height: 200, alignItems: "center" }}>
-                  <Text style={styles.text}>{questions[0].question}</Text>
-                  <TouchableOpacity onPress={this.showHideAnswer}>
-                    <Text style={{ color: red }}>Answer</Text>
+                <Text>
+                  Questions remaining: {countCardsRemaining} /
+                  {this.props.navigation.state.params.cardsCount}
+                </Text>
+                {showHideAnswerState ? (
+                  <View>
+                    <View style={{ height: 200, alignItems: "center" }}>
+                      <Text style={styles.text}>
+                        {questions[cardIndex].answer}
+                      </Text>
+                      <TouchableOpacity onPress={this.showHideAnswer}>
+                        <Text style={{ color: red }}>Question</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                ) : (
+                  <View>
+                    <View style={{ height: 200, alignItems: "center" }}>
+                      <Text style={styles.text}>
+                        {questions[cardIndex].question}
+                      </Text>
+                      <TouchableOpacity onPress={this.showHideAnswer}>
+                        <Text style={{ color: red }}>Answer</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                )}
+                <View style={{ height: 80 }}>
+                  <TouchableOpacity
+                    style={
+                      Platform.OS === "ios"
+                        ? styles.iosCorrectBtn
+                        : styles.androidCorrectBtn
+                    }
+                    onPress={this.handleCorrect}
+                  >
+                    <Text style={styles.correctBtnText}>Correct</Text>
+                  </TouchableOpacity>
+                </View>
+                <View style={{ height: 80 }}>
+                  <TouchableOpacity
+                    style={
+                      Platform.OS === "ios"
+                        ? styles.iosIncorrectBtn
+                        : styles.androidIncorrectBtn
+                    }
+                    onPress={this.handleIncorrect}
+                  >
+                    <Text style={styles.incorrectBtnText}>Incorrect</Text>
                   </TouchableOpacity>
                 </View>
               </View>
             )}
-
-            <View style={{ height: 80 }}>
-              <CorrectBtn props={this.props} />
-            </View>
-            <View style={{ height: 80 }}>
-              <IncorrectBtn props={this.props} />
-            </View>
           </View>
         ) : (
           <Text style={styles.text}>
