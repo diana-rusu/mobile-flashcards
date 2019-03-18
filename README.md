@@ -14,9 +14,10 @@ It has not been tested on iOS.
 
 To get started:
 
-- install Expo for Android: https://docs.expo.io/versions/latest/introduction/installation/
+- install Expo CLI by running: `npm install -g expo-cli`
 - install all project dependencies with `npm install`
 - start the development server with `npm start`
+- install mobile client Expo for your Android phone from the Play Store
 - scan the QR code using Expo
 
 ## Backend Server
