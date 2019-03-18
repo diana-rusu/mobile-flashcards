@@ -6,7 +6,8 @@ Mobile Flashcards is a project proposed by Udacity as part of React Nanodegree. 
 
 ## Supported platform
 
-The app has been tested using Expo on an Android platform and Android Studio emulator.
+The app has been tested using Expo on an Android platform and using Android Studio emulator.
+
 It has not been tested on iOS.
 
 ## How to run the project
