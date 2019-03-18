@@ -3,6 +3,7 @@ import {
   View,
   Text,
   FlatList,
+  List,
   StyleSheet,
   TouchableOpacity
 } from "react-native";
@@ -23,20 +24,15 @@ class DeckList extends Component {
   }
 
   renderDecks() {
-    let deckList = [];
     let keyList = [];
     let titleCount = {};
     countCards = 0;
-    Object.values(this.props.entries).map(entry => {
-      Object.values(entry).map(ob => {
-        titleCount[ob.title] = ob.questions.length;
-      });
-      deckList.push(Object.keys(entry));
+    Object.values(this.props.entries.entries).map(ob => {
+      titleCount[ob.title] = ob.questions.length;
     });
-    deckList.forEach(element => {
-      element.forEach(el => {
-        keyList.push({ key: el });
-      });
+
+    Object.keys(this.props.entries.entries).forEach(el => {
+      keyList.push({ key: el });
     });
 
     return (
@@ -49,7 +45,7 @@ class DeckList extends Component {
             >
               <View
                 style={{
-                  flex: 1,
+                  width: "100%",
                   margin: 10,
                   paddingVertical: 20,
                   borderBottomWidth: 1,
@@ -72,9 +68,7 @@ class DeckList extends Component {
     return (
       <View
         style={{
-          flex: 1,
-          alignItems: "center",
-          justifyContent: "space-around"
+          flex: 1
         }}
       >
         {this.renderDecks()}

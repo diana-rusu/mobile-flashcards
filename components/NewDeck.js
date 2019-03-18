@@ -5,7 +5,8 @@ import {
   TextInput,
   StyleSheet,
   TouchableOpacity,
-  Platform
+  Platform,
+  KeyboardAvoidingView
 } from "react-native";
 import { white, purple } from "../utils/colors";
 import { addDeck } from "../actions";
@@ -55,27 +56,29 @@ class NewDeck extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={{ fontSize: 50, textAlign: "center" }}>
-          What is the title of your new deck
-        </Text>
-
-        <TextInput
-          style={styles.input}
-          placeholder="Deck name"
-          value={this.state.deck_name}
-          // type="text"
-          style={{
-            height: 40,
-            width: 300,
-            paddingLeft: 6,
-            borderColor: "gray",
-            borderWidth: 1
-          }}
-          onChangeText={text => this.setState({ deck_name: text })}
-        />
-        <SubmitBtn onPress={this.submit} />
-      </View>
+      <KeyboardAvoidingView behavior="padding" style={styles.container}>
+        <View style={([styles.box], { flex: 2 })}>
+          <Text style={{ fontSize: 36, textAlign: "center" }}>
+            What is the title of your new deck
+          </Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Deck name"
+            value={this.state.deck_name}
+            style={{
+              height: 40,
+              margin: 10,
+              paddingLeft: 6,
+              borderColor: "gray",
+              borderWidth: 1
+            }}
+            onChangeText={text => this.setState({ deck_name: text })}
+          />
+        </View>
+        <View style={([styles.box], { flex: 2 })}>
+          <SubmitBtn onPress={this.submit} />
+        </View>
+      </KeyboardAvoidingView>
     );
   }
 }
@@ -83,9 +86,9 @@ class NewDeck extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    paddingTop: 20,
     backgroundColor: white,
-    justifyContent: "space-around",
+    justifyContent: "center",
     alignItems: "center"
   },
   input: {
@@ -118,12 +121,12 @@ const styles = StyleSheet.create({
     textAlign: "center",
     alignItems: "center"
   },
-  center: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginLeft: 30,
-    marginRight: 30
+  box: {
+    width: "100%",
+    height: "40%",
+    marginTop: 20,
+    backgroundColor: "#e76e63",
+    margin: 10
   }
 });
 export default connect()(NewDeck);

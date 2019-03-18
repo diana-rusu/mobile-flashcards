@@ -6,7 +6,8 @@ import {
   TextInput,
   StyleSheet,
   TouchableOpacity,
-  Platform
+  Platform,
+  KeyboardAvoidingView
 } from "react-native";
 import { white, purple } from "../utils/colors";
 import { addCard } from "../actions";
@@ -47,8 +48,8 @@ class AddCard extends Component {
   };
   render() {
     return (
-      <View style={styles.container}>
-        <View style={{ height: 80 }}>
+      <KeyboardAvoidingView behavior="padding" style={styles.container}>
+        <View style={([styles.box], { flex: 1 })}>
           <TextInput
             style={styles.input}
             underlineColorAndroid="transparent"
@@ -64,7 +65,7 @@ class AddCard extends Component {
             onChangeText={text => this.setState({ question: text })}
           />
         </View>
-        <View style={{ height: 80 }}>
+        <View style={([styles.box], { flex: 2 })}>
           <TextInput
             style={styles.input}
             underlineColorAndroid="transparent"
@@ -80,9 +81,10 @@ class AddCard extends Component {
             onChangeText={text => this.setState({ answer: text })}
           />
         </View>
-
-        <SubmitBtn onPress={this.submit} props={this.props} />
-      </View>
+        <View style={([styles.box], { flex: 3 })}>
+          <SubmitBtn onPress={this.submit} props={this.props} />
+        </View>
+      </KeyboardAvoidingView>
     );
   }
 }
@@ -90,7 +92,7 @@ class AddCard extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 35,
+    paddingTop: 20,
     margin: 20,
     alignItems: "center",
     justifyContent: "center"
@@ -110,7 +112,6 @@ const styles = StyleSheet.create({
     paddingRight: 30,
     borderRadius: 2,
     height: 45,
-    alignSelf: "flex-end",
     justifyContent: "center",
     alignItems: "center"
   },
@@ -119,18 +120,18 @@ const styles = StyleSheet.create({
     fontSize: 22,
     textAlign: "center"
   },
-  center: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginLeft: 30,
-    marginRight: 30
-  },
   input: {
     margin: 15,
     height: 40,
     borderColor: "#7a42f4",
     borderWidth: 1
+  },
+  box: {
+    width: "100%",
+    height: "40%",
+    marginTop: 20,
+    backgroundColor: "#e76e63",
+    margin: 10
   }
 });
 

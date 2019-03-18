@@ -93,17 +93,16 @@ class Quiz extends Component {
                         ? styles.iosIncorrectBtn
                         : styles.androidIncorrectBtn
                     }
-                    onPress={() => this.props.navigation.navigate("Home")}
+                    onPress={() => this.props.navigation.navigate("DeckList")}
                   >
                     <Text style={styles.incorrectBtnText}>Back to Deck</Text>
                   </TouchableOpacity>
                 </View>
               </View>
             ) : (
-              <View>
-                <Text>
-                  Questions remaining: {countCardsRemaining} /
-                  {this.props.navigation.state.params.cardsCount}
+              <View style={{ alignItems: "center" }}>
+                <Text style={{ fontSize: 14 }}>
+                  Questions remaining: {countCardsRemaining}
                 </Text>
                 {showHideAnswerState ? (
                   <View>
@@ -112,7 +111,7 @@ class Quiz extends Component {
                         {questions[cardIndex].answer}
                       </Text>
                       <TouchableOpacity onPress={this.showHideAnswer}>
-                        <Text style={{ color: red }}>Question</Text>
+                        <Text style={{ color: red }}>Show Question</Text>
                       </TouchableOpacity>
                     </View>
                   </View>
@@ -123,7 +122,7 @@ class Quiz extends Component {
                         {questions[cardIndex].question}
                       </Text>
                       <TouchableOpacity onPress={this.showHideAnswer}>
-                        <Text style={{ color: red }}>Answer</Text>
+                        <Text style={{ color: red }}>Show Answer</Text>
                       </TouchableOpacity>
                     </View>
                   </View>

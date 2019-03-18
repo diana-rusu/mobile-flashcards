@@ -61,18 +61,22 @@ class IndividualDeck extends Component {
       this.props.entries.entries[deckTitle].questions;
     return (
       <View style={styles.container}>
-        <View style={{ height: 100 }}>
+        <View style={([styles.box], { flex: 1 })}>
           <Text style={styles.text}>{deckTitle}</Text>
           <Text style={{ textAlign: "center", fontSize: 18, color: "#CED0CE" }}>
             cards {this.props.entries.entries[deckTitle].questions.length}
           </Text>
         </View>
-        <AddCardBtn props={this.props} />
-        <StartQuizBtn
-          props={this.props}
-          questions={questions}
-          count={this.props.entries.entries[deckTitle].questions.length}
-        />
+        <View style={([styles.box], { flex: 1 })}>
+          <AddCardBtn props={this.props} />
+        </View>
+        <View style={([styles.box], { flex: 4 })}>
+          <StartQuizBtn
+            props={this.props}
+            questions={questions}
+            count={this.props.entries.entries[deckTitle].questions.length}
+          />
+        </View>
       </View>
     );
   }
@@ -136,12 +140,12 @@ const styles = StyleSheet.create({
     textAlign: "center",
     alignItems: "center"
   },
-  center: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginLeft: 30,
-    marginRight: 30
+  box: {
+    width: "100%",
+    height: "40%",
+    marginTop: 20,
+    backgroundColor: "#e76e63",
+    margin: 10
   },
   text: {
     fontSize: 30,

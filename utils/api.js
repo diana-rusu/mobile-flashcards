@@ -70,7 +70,7 @@ export function clearLocalNotification() {
 function createNotification() {
   return {
     title: "Log your stats",
-    body: "!!!don't forget to log your stats for today",
+    body: "!don't forget to log your stats for today!",
     android: {
       sound: true,
       priority: "high",
@@ -85,13 +85,12 @@ export function setLocalNotification() {
     .then(JSON.parse)
     .then(data => {
       if (data === null) {
-        console.log("DATA NULL");
         Permissions.askAsync(Permissions.NOTIFICATIONS).then(({ status }) => {
           if (status === "granted") {
             Notifications.cancelAllScheduledNotificationsAsync();
             let tomorrow = new Date();
             tomorrow.setDate(tomorrow.getDate() + 1);
-            tomorrow.setHours(20);
+            tomorrow.setHours(8);
             tomorrow.setMinutes(0);
 
             Notifications.scheduleLocalNotificationAsync(createNotification(), {
