@@ -14,6 +14,7 @@ class Quiz extends Component {
     showHideAnswerState: false,
     showScore: 0,
     countCardsRemaining: this.props.navigation.state.params.cardsCount - 1,
+    cardsCount: this.props.navigation.state.params.cardsCount,
     correct: 0,
     incorrect: 0
   };
@@ -53,14 +54,28 @@ class Quiz extends Component {
       }
     }
   };
+  clearAllStateData = () => {
+    this.setState({
+      showHideAnswerState: false,
+      showScore: 0,
+      countCardsRemaining: this.props.navigation.state.params.cardsCount - 1,
+      correct: 0,
+      incorrect: 0
+    });
+  };
   render() {
     const { deckTitle, questions } = this.props.navigation.state.params;
-    const { showHideAnswerState, showScore, countCardsRemaining } = this.state;
+    const {
+      showHideAnswerState,
+      showScore,
+      countCardsRemaining,
+      cardsCount
+    } = this.state;
     const cardIndex =
       this.props.navigation.state.params.cardsCount - countCardsRemaining - 1;
     return (
       <View style={styles.container}>
-        {this.props.navigation.state.params.cardsCount > 0 ? (
+        {cardsCount > 0 ? (
           <View>
             {showScore ? (
               <View>
@@ -79,9 +94,7 @@ class Quiz extends Component {
                         ? styles.iosCorrectBtn
                         : styles.androidCorrectBtn
                     }
-                    onPress={() =>
-                      this.props.navigation.navigate("IndividualDeck")
-                    }
+                    onPress={this.clearAllStateData}
                   >
                     <Text style={styles.correctBtnText}>Restart Quiz</Text>
                   </TouchableOpacity>
@@ -93,7 +106,9 @@ class Quiz extends Component {
                         ? styles.iosIncorrectBtn
                         : styles.androidIncorrectBtn
                     }
-                    onPress={() => this.props.navigation.navigate("DeckList")}
+                    onPress={() =>
+                      this.props.navigation.navigate("IndividualDeck")
+                    }
                   >
                     <Text style={styles.incorrectBtnText}>Back to Deck</Text>
                   </TouchableOpacity>
